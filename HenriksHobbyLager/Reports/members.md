@@ -7,8 +7,4 @@
 
 ## Kodare
 
-- 
-- 
-- 
-- 
-- 
+- Dennis Byberg
