@@ -44,3 +44,8 @@ vilket gör det möjligt att lägga till nya funktioner utan att behöva ändra den b
 ### Task 1.4.3: Se till att Liskov Substitution fungerar med gränssnitt
 Min kod uppfyller Liskov Substitution Principle genom att använda interfaces vilket gör det möjligt att byta ut implementeringar utan att påverka funktionaliteten.
 Alla mina klasser som implementerar gränssnitten kan ersättas med andra utan att gå sönder.
+
+### Task 1.4.4: Segregera stora interfaces till mindre, fokuserade
+Jag har delat upp mina interface i mindre mer fokuserade.
+Genom att skapa separata gränssnitt för läs- och skrivoperationer
+(t.ex. IReadProductFacade och IWriteProductFacade) har jag säkerställt att varje gränssnitt har ett tydligt och avgränsat ansvar.
