@@ -1,44 +1,33 @@
-﻿using HenriksHobbyLager.Helpers;
+﻿using HenriksHobbyLager.Models;
+using HenriksHobbyLager.Repositories;
 
 namespace HenriksHobbyLager
 {
-
     static class Program
     {
-        static void Main()
+        static async Task Main()
         {
-            // Huvudloopen - Stäng inte av programmet, då försvinner allt!
-            while (true)
+            var productRepo = new ProductRepository();
+
+            // Skapa en ny produkt
+            var newProduct = new Product
             {
-                PrintHelper.PrintMenu();
-                var choice = Console.ReadLine();
+                Id = 1,
+                Name = "Laptop",
+                Price = 7999.99m,
+                Stock = 10,
+                Category = "Elektronik",
+                Created = DateTime.Now
+            };
 
-                switch (choice)
-                {
-                    case "1":
-                        Product.ShowAllProducts();
-                        break;
-                    case "2":
-                        Product.AddProduct();
-                        break;
-                    case "3":
-                        Product.UpdateProduct();
-                        break;
-                    case "4":
-                        Product.DeleteProduct();
-                        break;
-                    case "5":
-                        Product.SearchProducts();
-                        break;
-                    case "6":
-                        return;  // OBS! All data försvinner om du väljer denna!
-                    default:
-                        Console.WriteLine("Ogiltigt val! Är du säker på att du tryckte på rätt knapp?");
-                        break;
-                }
+            // Lägg till produkt
+            await productRepo.AddAsync(newProduct);
 
-                Console.WriteLine("\nTryck på valfri tangent för att fortsätta... (helst inte ESC)");
-                Console.ReadKey();
+            // Hämta alla produkter
+            var products = await productRepo.GetAllAsync();
+            foreach (var product in products)
+            {
+                Console.WriteLine($"{product.Name} - {product.Price:C}");
             }
         }
     }
