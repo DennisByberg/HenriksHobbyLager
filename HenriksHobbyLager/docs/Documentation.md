@@ -52,3 +52,31 @@ Genom att skapa separata gränssnitt för läs- och skrivoperationer
 
 ### Task 1.4.5: Inför Dependency Injection där det är relevant
 Jag tycker inte det är relevant att göra några förändringar just nu.
+
+### Task 1.4.5: Task 3.1.3: Dokumentera gränssnittets struktur och arbetsflöde
+
+Startmeny visar en lista med alternativ:
+* Visa alla produkter
+* Lägg till ny produkt
+* Uppdatera produkt
+* Ta bort produkt
+* Sök produkter
+* Avsluta
+
+#### Alternativ 1: Visa alla produkter:
+Anropar ShowAllProducts() som hämtar och visar alla produkter via IProductFacade.GetAllProductsAsync().
+
+#### Alternativ 2: Lägg till ny produkt:
+Anropar AddProduct() som samlar in produktinformation från användaren och skapar en ny produkt via IProductFacade.CreateProductAsync().
+
+#### Alternativ 3: Uppdatera produkt:
+Anropar UpdateProduct() som låter användaren uppdatera en produkt via IProductFacade.GetProductByIdAsync(id) och IProductFacade.UpdateProductAsync().
+
+#### Alternativ 4: Ta bort produkt:
+Anropar DeleteProduct() som tar bort en produkt via IProductFacade.GetProductByIdAsync(id) och IProductFacade.DeleteProductAsync().
+
+#### Alternativ 5: Sök produkter (kommenterad kod, kan implementeras i framtiden):
+Anropar SearchProducts() som skulle söka efter produkter via IProductFacade.Search().
+
+#### Alternativ 6: Avsluta:
+Avslutar programmet via Environment.Exit(0).
