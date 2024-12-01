@@ -40,3 +40,7 @@ utan att ändra de befintliga klasserna.
 
 Klasserna ProductRepository och ProductFacade är också designade för att vara stängda för modifiering men öppna för utökning,
 vilket gör det möjligt att lägga till nya funktioner utan att behöva ändra den befintliga logiken.
+
+### Task 1.4.3: Se till att Liskov Substitution fungerar med gränssnitt
+Min kod uppfyller Liskov Substitution Principle genom att använda interfaces vilket gör det möjligt att byta ut implementeringar utan att påverka funktionaliteten.
+Alla mina klasser som implementerar gränssnitten kan ersättas med andra utan att gå sönder.
