@@ -1,12 +1,13 @@
 ﻿namespace HenriksHobbyLager.Interfaces
 {
+    // Metoderna är asynkrona för att stödja långsamma operationer som databasanrop.
     public interface IRepository<T>
     {
-        IEnumerable<T> GetAll();
-        T GetById(int id);
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(int id);
-        IEnumerable<T> Search(Func<T, bool> predicate);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T?> GetByIdAsync(int id);
+        Task AddAsync(T entity);
+        Task UpdateAsync(T entity);
+        Task DeleteAsync(int id);
+        Task<IEnumerable<T>> SearchAsync(Func<T, bool> predicate);
     }
 }
