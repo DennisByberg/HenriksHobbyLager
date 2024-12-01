@@ -1,7 +1,8 @@
-﻿using HenriksHobbyLager.Facades;
+﻿using HenriksHobbyLager.Data;
 using HenriksHobbyLager.Interfaces;
 using HenriksHobbyLager.Models;
 using HenriksHobbyLager.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HenriksHobbyLager
 {
@@ -9,33 +10,38 @@ namespace HenriksHobbyLager
     {
         static async Task Main()
         {
-            var productRepository = new ProductRepository();
-            IProductFacade productFacade = new ProductFacade(productRepository);
+            // Konfigurera DI-container
+            var serviceProvider = new ServiceCollection()
+                .AddDbContext<AppDbContext>() // Registrera AppDbContext
+                .AddScoped<IRepository<Product>, ProductRepository>() // Registrera repository
+                .BuildServiceProvider();
 
-            // Skapa en ny produkt
-            var newProduct = new Product
+            try
             {
-                Id = 1,
-                Name = "Röd liten Helikopter",
-                Price = 2999.99m,
-                Stock = 20,
-                Category = "Elektronik",
-                Created = DateTime.Now
-            };
+                // Hämta instans av AppDbContext och IRepository<Product> från DI-container
+                var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
+                var productRepository = serviceProvider.GetRequiredService<IRepository<Product>>();
 
-            await productFacade.CreateProductAsync(newProduct);
+                // Skapar databasen om den inte finns
+                await dbContext.Database.EnsureCreatedAsync();
 
-            // Hämta alla produkter
-            //var allProducts = await productFacade.GetAllProductsAsync();
+                // Skapa en ny produkt
+                var newProduct = new Product
+                {
+                    Name = "Röd liten Helikopter",
+                    Price = 2999.99m,
+                    Stock = 20,
+                    Category = "Elektronik",
+                    Created = DateTime.Now
+                };
 
-            //foreach (var product in allProducts)
-            //    Console.WriteLine($"{product.Name} - {product.Price:C}");
-
-            // Sök efter produkter
-            //var searchResults = await productFacade.SearchProductsAsync("Röd liten Helikopter");
-
-            //foreach (var product in searchResults)
-            //    Console.WriteLine($"{product.Name} - {product.Price:C}");
+                // Lägg till produkt via repository
+                await productRepository.AddAsync(newProduct);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ett fel inträffade: {ex.Message}");
+            }
         }
     }
 }

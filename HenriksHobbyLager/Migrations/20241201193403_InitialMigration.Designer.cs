@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HenriksHobbyLager.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241201173112_First")]
-    partial class First
+    [Migration("20241201193403_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

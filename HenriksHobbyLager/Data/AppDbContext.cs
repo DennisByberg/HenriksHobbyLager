@@ -5,20 +5,21 @@ namespace HenriksHobbyLager.Data
 {
     public class AppDbContext : DbContext
     {
-        public DbSet<Product>? Products { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // TODO: Gömma min databas sträng?
-            optionsBuilder.UseSqlite("Data Source=ProductInventory.db");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("Data Source=ProductInventory.db");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>(entity =>
             {
-                // TODO: Lägg oå mer kontroller
-                entity.HasKey(p => p.Id); // Primary Key
+                entity.HasKey(p => p.Id); // Primärnyckel
             });
         }
     }

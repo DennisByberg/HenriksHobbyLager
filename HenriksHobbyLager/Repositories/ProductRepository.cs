@@ -1,63 +1,61 @@
-﻿using HenriksHobbyLager.Interfaces;
+﻿using HenriksHobbyLager.Data;
+using HenriksHobbyLager.Interfaces;
 using HenriksHobbyLager.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HenriksHobbyLager.Repositories
 {
     public class ProductRepository : IRepository<Product>
     {
-        private readonly List<Product> _products = [];
+        private readonly AppDbContext _dbContext;
+
+        // Konstruktor som tar emot DbContext
+        public ProductRepository(AppDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
 
         // Hämtar alla produkter
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            return await Task.FromResult(_products);
+            return await _dbContext.Products.ToListAsync();
         }
 
         // Hämtar en produkt baserat på ID
         public async Task<Product?> GetByIdAsync(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
-            return await Task.FromResult(product);
+            return await _dbContext.Products.FindAsync(id);
         }
 
         // Lägger till en produkt
         public async Task AddAsync(Product entity)
         {
-            _products.Add(entity);
-
-            await Task.CompletedTask;
+            await _dbContext.Products.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         // Uppdaterar en produkt
         public async Task UpdateAsync(Product entity)
         {
-            var product = _products.FirstOrDefault(p => p.Id == entity.Id);
-            if (product != null)
-            {
-                product.Name = entity.Name;
-                product.Price = entity.Price;
-                product.Stock = entity.Stock;
-                product.Category = entity.Category;
-                product.LastUpdated = entity.LastUpdated;
-            }
-
-            await Task.CompletedTask;
+            _dbContext.Products.Update(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
         // Tar bort en produkt
         public async Task DeleteAsync(int id)
         {
-            var product = _products.FirstOrDefault(p => p.Id == id);
-            if (product != null) _products.Remove(product);
-
-            await Task.CompletedTask;
+            var product = await _dbContext.Products.FindAsync(id);
+            if (product != null)
+            {
+                _dbContext.Products.Remove(product);
+                await _dbContext.SaveChangesAsync();
+            }
         }
 
         // Söker produkter baserat på ett villkor
         public async Task<IEnumerable<Product>> SearchAsync(Func<Product, bool> predicate)
         {
-            var result = _products.Where(predicate).ToList();
-            return await Task.FromResult(result);
+            return await Task.FromResult(_dbContext.Products.Where(predicate).ToList());
         }
     }
 }
