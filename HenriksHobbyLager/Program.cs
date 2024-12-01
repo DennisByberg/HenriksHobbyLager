@@ -1,4 +1,5 @@
 ﻿using HenriksHobbyLager.Data;
+using HenriksHobbyLager.Facades;
 using HenriksHobbyLager.Interfaces;
 using HenriksHobbyLager.Models;
 using HenriksHobbyLager.Repositories;
@@ -10,38 +11,20 @@ namespace HenriksHobbyLager
     {
         static async Task Main()
         {
-            // Konfigurera DI-container
             var serviceProvider = new ServiceCollection()
-                .AddDbContext<AppDbContext>() // Registrera AppDbContext
-                .AddScoped<IRepository<Product>, ProductRepository>() // Registrera repository
-                .BuildServiceProvider();
+                .AddDbContext<AppDbContext>()                           // Registrera AppDbContext
+                .AddScoped<IRepository<Product>, ProductRepository>()   // Registrera Repository
+                .AddScoped<IProductFacade, ProductFacade>()             // Registrera Facade
+                .BuildServiceProvider();                                // Bygg DI-container
 
-            try
-            {
-                // Hämta instans av AppDbContext och IRepository<Product> från DI-container
-                var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
-                var productRepository = serviceProvider.GetRequiredService<IRepository<Product>>();
+            // Hämta instans av IProductFacade från DI-container
+            var productFacade = serviceProvider.GetRequiredService<IProductFacade>();
 
-                // Skapar databasen om den inte finns
-                await dbContext.Database.EnsureCreatedAsync();
+            // Skapa en instans av ConsoleMenuHandler
+            var menuHandler = new ConsoleMenuHandler(productFacade);
 
-                // Skapa en ny produkt
-                var newProduct = new Product
-                {
-                    Name = "Röd liten Helikopter",
-                    Price = 2999.99m,
-                    Stock = 20,
-                    Category = "Elektronik",
-                    Created = DateTime.Now
-                };
-
-                // Lägg till produkt via repository
-                await productRepository.AddAsync(newProduct);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ett fel inträffade: {ex.Message}");
-            }
+            // Starta menyn
+            await menuHandler.DisplayMenu();
         }
     }
 }
