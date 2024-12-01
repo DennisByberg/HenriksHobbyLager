@@ -49,3 +49,6 @@ Alla mina klasser som implementerar gränssnitten kan ersättas med andra utan att
 Jag har delat upp mina interface i mindre mer fokuserade.
 Genom att skapa separata gränssnitt för läs- och skrivoperationer
 (t.ex. IReadProductFacade och IWriteProductFacade) har jag säkerställt att varje gränssnitt har ett tydligt och avgränsat ansvar.
+
+### Task 1.4.5: Inför Dependency Injection där det är relevant
+Jag tycker inte det är relevant att göra några förändringar just nu.
