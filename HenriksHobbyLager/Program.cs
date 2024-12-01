@@ -26,16 +26,16 @@ namespace HenriksHobbyLager
             await productFacade.CreateProductAsync(newProduct);
 
             // Hämta alla produkter
-            var allProducts = await productFacade.GetAllProductsAsync();
+            //var allProducts = await productFacade.GetAllProductsAsync();
 
-            foreach (var product in allProducts)
-                Console.WriteLine($"{product.Name} - {product.Price:C}");
+            //foreach (var product in allProducts)
+            //    Console.WriteLine($"{product.Name} - {product.Price:C}");
 
             // Sök efter produkter
-            var searchResults = await productFacade.SearchProductsAsync("Röd liten Helikopter");
+            //var searchResults = await productFacade.SearchProductsAsync("Röd liten Helikopter");
 
-            foreach (var product in searchResults)
-                Console.WriteLine($"{product.Name} - {product.Price:C}");
+            //foreach (var product in searchResults)
+            //    Console.WriteLine($"{product.Name} - {product.Price:C}");
         }
     }
 }
