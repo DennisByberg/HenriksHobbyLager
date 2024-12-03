@@ -2,6 +2,7 @@
 using HenriksHobbyLager.Interfaces;
 using HenriksHobbyLager.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace HenriksHobbyLager.Repositories
 {
@@ -53,9 +54,9 @@ namespace HenriksHobbyLager.Repositories
         }
 
         // Söker produkter baserat på ett villkor
-        public async Task<IEnumerable<Product>> SearchAsync(Func<Product, bool> predicate)
+        public async Task<IEnumerable<Product>> SearchAsync(Expression<Func<Product, bool>> predicate)
         {
-            return await Task.FromResult(_dbContext.Products.Where(predicate).ToList());
+            return await _dbContext.Products.Where(predicate).ToListAsync();
         }
     }
 }

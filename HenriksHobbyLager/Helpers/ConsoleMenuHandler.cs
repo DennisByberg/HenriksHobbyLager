@@ -1,16 +1,11 @@
 ﻿using HenriksHobbyLager.Interfaces;
 using HenriksHobbyLager.Models;
 
-namespace HenriksHobbyLager
+namespace HenriksHobbyLager.Helpers
 {
-    public class ConsoleMenuHandler
+    public class ConsoleMenuHandler(IProductFacade productFacade)
     {
-        private readonly IProductFacade _productFacade;
-
-        public ConsoleMenuHandler(IProductFacade productFacade)
-        {
-            _productFacade = productFacade;
-        }
+        private readonly IProductFacade _productFacade = productFacade;
 
         public async Task DisplayMenu()
         {
@@ -43,7 +38,7 @@ namespace HenriksHobbyLager
                         await DeleteProduct();
                         break;
                     case "5":
-                        //await SearchProducts();
+                        await SearchProducts();
                         break;
                     case "6":
                         Environment.Exit(0);
@@ -184,26 +179,35 @@ namespace HenriksHobbyLager
             Console.ReadKey();
         }
 
-        //private async Task SearchProducts()
-        //{
-        //    Console.Write("Sök (namn eller kategori - versaler spelar ingen roll!): ");
-        //    var searchTerm = Console.ReadLine();
-        //    var products = await _productFacade.Search(searchTerm);
+        private async Task SearchProducts()
+        {
+            Console.Write("Sök (namn eller kategori - versaler spelar ingen roll!): ");
+            var searchTerm = Console.ReadLine();
 
-        //    if (!products.Any())
-        //    {
-        //        Console.WriteLine("Inga produkter matchade sökningen. Prova med något annat!");
-        //    }
-        //    else
-        //    {
-        //        foreach (var product in products)
-        //        {
-        //            DisplayProduct(product);
-        //        }
-        //    }
-        //    Console.WriteLine("Tryck på en tangent för att fortsätta...");
-        //    Console.ReadKey();
-        //}
+            if (string.IsNullOrWhiteSpace(searchTerm))
+            {
+                Console.WriteLine("Sökordet får inte vara tomt. Försök igen.");
+                return;
+            }
+
+            var products = await _productFacade.SearchProductsAsync(searchTerm);
+
+            if (!products.Any())
+            {
+                Console.WriteLine("Inga produkter matchade sökningen. Prova med något annat!");
+            }
+
+            else
+            {
+                foreach (var product in products)
+                {
+                    DisplayProduct(product);
+                }
+            }
+
+            Console.WriteLine("Tryck på en tangent för att fortsätta...");
+            Console.ReadKey();
+        }
 
         private void DisplayProduct(Product product)
         {

@@ -3,15 +3,9 @@ using HenriksHobbyLager.Models;
 
 namespace HenriksHobbyLager.Facades
 {
-    internal class ProductFacade : IProductFacade
+    internal class ProductFacade(IRepository<Product> productRepository) : IProductFacade
     {
-        private readonly IRepository<Product> _productRepository;
-
-        // Konstruktor som tar emot ett IRepository<Product> för att kunna kommunicera med datalagret
-        public ProductFacade(IRepository<Product> productRepository)
-        {
-            _productRepository = productRepository;
-        }
+        private readonly IRepository<Product> _productRepository = productRepository;
 
         // Hämtar alla produkter
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
@@ -59,9 +53,10 @@ namespace HenriksHobbyLager.Facades
         // Söker produkter baserat på ett sökord
         public async Task<IEnumerable<Product>> SearchProductsAsync(string searchTerm)
         {
+            searchTerm = searchTerm.ToLower();
             return await _productRepository.SearchAsync(p =>
-                p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                p.Category.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+                p.Name.ToLower().Contains(searchTerm) ||
+                p.Category.ToLower().Contains(searchTerm));
         }
     }
 }
