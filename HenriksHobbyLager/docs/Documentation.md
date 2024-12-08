@@ -80,3 +80,24 @@ Anropar SearchProducts() som skulle söka efter produkter via IProductFacade.Sear
 
 #### Alternativ 6: Avsluta:
 Avslutar programmet via Environment.Exit(0).
+
+### Task 5.1.1: Beskriv projektets syfte och funktioner
+
+#### Syfte 
+Henriks Hobby Lager är ett lagerhanteringssystem för hobbyprodukter.
+Projektet syftar till att hjälpa Henrik att organisera och hantera sina produkter.
+
+#### Funktioner
+*  Visa produkter: En lista över alla produkter i lagret kan hämtas och visas i konsolen.
+Lägg till ny produkt: Användaren kan lägga till en ny produkt genom att ange namn, pris, lagermängd, och kategori.
+
+* Uppdatera produkt: En befintlig produkt kan uppdateras med ny information. Användaren kan ändra valfria egenskaper.
+
+* Ta bort produkt: Användaren kan ta bort en produkt från lagret permanent.
+
+* Sökning av produkt:
+Sök produkter baserat på namn eller kategori. Programmet söker oberoende av versaler eller gemener och returnerar alla matchande produkter.
+
+Programmet använder en SQLite-databas för att lagra produktinformation. Det finns en konsolmeny som guidar användaren genom olika operationer. Validering är inbyggd för att säkerställa korrekt input.
+5. 
+Programmet använder Dependency Injection (DI), för att skapa löst kopplade komponenter som är lättare att testa, återanvända och underhålla. Tjänster som IProductFacade och IRepository<Product> injiceras automatiskt vid behov.
